@@ -65,11 +65,11 @@ namespace ariel{
     }
 
     bool MagicalContainer::isPrime(int num){
-        if (num <= 1){
+        if (num <= 1 || (num != 2 && num % 2 == 0)){
             return false;
         }
         int sqroot = std::sqrt(num);
-        for (int i = 2; i < sqroot; i++){
+        for (int i = 2; i <= sqroot; i++){
             if (num % i == 0){
                 return false;
             }
@@ -92,11 +92,21 @@ namespace ariel{
     }
 
     MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator++(){
+        if(this->iter == this->prime_ptr->end()){
+            throw std::runtime_error("Iterator is at the end");
+        }
         this->iter++;
         return *this;
     }
 
     bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator& other) const{
+        if(this->prime_ptr != other.prime_ptr){
+            throw std::invalid_argument("Not the same container");
+        }
+
+        if(this->prime_ptr->size() == 0){
+            return true;
+        }
         return std::distance(this->prime_ptr->begin(), this->iter) == std::distance(other.prime_ptr->begin(), other.iter);
     }
 
@@ -129,6 +139,9 @@ namespace ariel{
     }
 
     MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator=(const PrimeIterator& other){
+        if(this->prime_ptr != other.prime_ptr){
+            throw std::runtime_error("different container");
+        }
         return *this;
     }
 
@@ -147,6 +160,9 @@ namespace ariel{
     }
 
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator++(){
+        if(this->iter == this->sorted_ptr->end()){
+            throw std::runtime_error("Iterator is at the end");
+        }
         this->iter++;
         return *this;
     }
@@ -184,6 +200,9 @@ namespace ariel{
     }
 
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator=(const AscendingIterator& other){
+        if(this->sorted_ptr != other.sorted_ptr){
+            throw std::runtime_error("different containers");
+        }
         return *this;
     }
 
@@ -202,6 +221,9 @@ namespace ariel{
     }
 
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator++(){
+        if(this->iter == this->cross_ptr->end()){
+            throw std::runtime_error("Iterator is at the end");
+        }
         this->iter++;
         return *this;
     }
@@ -239,6 +261,9 @@ namespace ariel{
     }
 
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator& other){
+        if(this->cross_ptr != other.cross_ptr){
+            throw std::runtime_error("different containers");
+        }
         return *this;
     }
 }
