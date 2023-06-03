@@ -156,11 +156,11 @@ namespace ariel{
     }
 
     bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator& other) const{
-        return false;
+        return std::distance(this->sorted_ptr->begin(), this->iter) < std::distance(other.sorted_ptr->begin(), other.iter);
     }
 
     bool MagicalContainer::AscendingIterator::operator!=(const AscendingIterator& other) const{
-        return false;
+        return std::distance(this->sorted_ptr->begin(), this->iter) != std::distance(other.sorted_ptr->begin(), other.iter);
     }
 
     int MagicalContainer::AscendingIterator::operator*() const{
@@ -168,12 +168,14 @@ namespace ariel{
     }
 
     MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin() const{
-        return *this;
+        MagicalContainer::AscendingIterator ans(*this);
+        ans.iter = this->sorted_ptr->begin();
+        return ans;
     }
 
     MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end() const{
-        MagicalContainer container;
-        AscendingIterator ans(container);
+        MagicalContainer::AscendingIterator ans(*this);
+        ans.iter = this->sorted_ptr->end();
         return ans;
     }
 
@@ -196,36 +198,39 @@ namespace ariel{
     }
 
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator++(){
+        this->iter++;
         return *this;
     }
 
     bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator& other) const{
-        return false;
+        return std::distance(this->cross_ptr->begin(), this->iter) == std::distance(other.cross_ptr->begin(), other.iter);
     }
 
     bool MagicalContainer::SideCrossIterator::operator>(const SideCrossIterator& other) const{
-        return false;
+        return std::distance(this->cross_ptr->begin(), this->iter) > std::distance(other.cross_ptr->begin(), other.iter);
     }
 
     bool MagicalContainer::SideCrossIterator::operator<(const SideCrossIterator& other) const{
-        return false;
+        return std::distance(this->cross_ptr->begin(), this->iter) < std::distance(other.cross_ptr->begin(), other.iter);
     }
 
     bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator& other) const{
-        return false;
+        return std::distance(this->cross_ptr->begin(), this->iter) != std::distance(other.cross_ptr->begin(), other.iter);
     }
 
     int MagicalContainer::SideCrossIterator::operator*() const{
-        return 0;
+        return *(this->iter); // gives the actual value
     }
 
     MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::begin() const{
-        return *this;
+        MagicalContainer::SideCrossIterator ans(*this);
+        ans.iter = this->cross_ptr->begin();
+        return ans;
     }
 
     MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end() const{
-        MagicalContainer container;
-        MagicalContainer::SideCrossIterator ans(container);
+        MagicalContainer::SideCrossIterator ans(*this);
+        ans.iter = this->cross_ptr->begin();
         return ans;
     }
 
