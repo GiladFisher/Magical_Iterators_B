@@ -37,6 +37,10 @@ namespace ariel{
     }
 
     void MagicalContainer::removeElement(int element){
+        this->original_order.remove(element);
+        this->sorted.erase(element);
+        this->prime.remove(element);
+        this->cross.remove(element);
     }
 
     int MagicalContainer::size() const{
@@ -69,6 +73,15 @@ namespace ariel{
         return true;
     }
 
+    MagicalContainer::PrimeIterator::PrimeIterator(){// default
+        this->iter = this->prime_ptr->begin();
+    }
+
+    MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& other){ // copy
+        this->iter = other.iter;
+        this->prime_ptr = other.prime_ptr;
+    }
+
     MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container){
         this->iter = container.prime.begin();
         this->prime_ptr = &container.prime;
@@ -80,32 +93,34 @@ namespace ariel{
     }
 
     bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator& other) const{
-        return this->iter == other.iter;
+        return std::distance(this->prime_ptr->begin(), this->iter) == std::distance(other.prime_ptr->begin(), other.iter);
     }
 
     bool MagicalContainer::PrimeIterator::operator>(const PrimeIterator& other) const{
-        return false;
+        return std::distance(this->prime_ptr->begin(), this->iter) > std::distance(other.prime_ptr->begin(), other.iter);;
     }
 
     bool MagicalContainer::PrimeIterator::operator<(const PrimeIterator& other) const{
-        return false;
+        return std::distance(this->prime_ptr->begin(), this->iter) < std::distance(other.prime_ptr->begin(), other.iter);
     }
 
     bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator& other) const{
-        return false;
+        return std::distance(this->prime_ptr->begin(), this->iter) != std::distance(other.prime_ptr->begin(), other.iter);
     }
 
     int MagicalContainer::PrimeIterator::operator*() const{
-        return 0;
+        return *(this->iter); // gives the actual value
     }
 
     MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin() const{
-        return *this;
+        MagicalContainer::PrimeIterator ans(*this);
+        ans.iter = this->prime_ptr->begin();
+        return ans;
     }
 
     MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end() const{
-        MagicalContainer container;
-        MagicalContainer::PrimeIterator ans(container);
+        MagicalContainer::PrimeIterator ans(*this);
+        ans.iter = this->prime_ptr->end();
         return ans;
     }
 
@@ -113,10 +128,22 @@ namespace ariel{
         return *this;
     }
 
+    MagicalContainer::AscendingIterator::AscendingIterator(){// default
+        this->iter = this->sorted_ptr->begin();
+    }
+
     MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &container){
+        this->iter = container.sorted.begin();
+        this->sorted_ptr = &container.sorted;
+    }
+
+    MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator& other){ // copy
+        this->iter = other.iter;
+        this->sorted_ptr = other.sorted_ptr;
     }
 
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator++(){
+        this->iter++;
         return *this;
     }
 
@@ -137,7 +164,7 @@ namespace ariel{
     }
 
     int MagicalContainer::AscendingIterator::operator*() const{
-        return 0;
+        return std::distance(this->sorted_ptr->begin(), this->iter); // gives the actual index
     }
 
     MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin() const{
@@ -154,7 +181,18 @@ namespace ariel{
         return *this;
     }
 
+    MagicalContainer::SideCrossIterator::SideCrossIterator(){// default
+        this->iter = this->cross_ptr->begin();
+    }
+
     MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container){
+        this->iter = container.cross.begin();
+        this->cross_ptr = &container.cross;
+    }
+
+    MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& other){ // copy
+        this->iter = other.iter;
+        this->cross_ptr = other.cross_ptr;
     }
 
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator++(){
