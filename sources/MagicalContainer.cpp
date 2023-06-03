@@ -148,11 +148,11 @@ namespace ariel{
     }
 
     bool MagicalContainer::AscendingIterator::operator==(const AscendingIterator& other) const{
-        return false;
+        return std::distance(this->sorted_ptr->begin(), this->iter) == std::distance(other.sorted_ptr->begin(), other.iter);
     }
 
     bool MagicalContainer::AscendingIterator::operator>(const AscendingIterator& other) const{
-        return false;
+        return std::distance(this->sorted_ptr->begin(), this->iter) > std::distance(other.sorted_ptr->begin(), other.iter);;
     }
 
     bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator& other) const{
@@ -164,7 +164,7 @@ namespace ariel{
     }
 
     int MagicalContainer::AscendingIterator::operator*() const{
-        return std::distance(this->sorted_ptr->begin(), this->iter); // gives the actual index
+        return *(this->iter); // gives the actual index
     }
 
     MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin() const{
