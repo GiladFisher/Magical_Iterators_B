@@ -37,6 +37,10 @@ namespace ariel{
     }
 
     void MagicalContainer::removeElement(int element){
+        int exists = this->sorted.count(element);
+        if(exists == 0){
+            throw std::runtime_error("Element does not exist");
+        }
         this->original_order.remove(element);
         this->sorted.erase(element);
         this->prime.remove(element);
