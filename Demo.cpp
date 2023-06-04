@@ -5,9 +5,7 @@ using namespace ariel;
 int main() {
     // Create a MagicalContainer and add some elements
     MagicalContainer container;
-    std::cout << "Size of container: " << container.size() << std::endl;
     container.addElement(17);
-    std::cout << "Size of container: " << container.size() << std::endl;
     container.addElement(2);
     container.addElement(25);
     container.addElement(9);
