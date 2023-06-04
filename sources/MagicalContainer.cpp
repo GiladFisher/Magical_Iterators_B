@@ -11,7 +11,6 @@
 #include "MagicalContainer.hpp"
 namespace ariel{
     MagicalContainer::MagicalContainer(){
-        this->back = true;
     }
 
     MagicalContainer::~MagicalContainer(){
@@ -27,13 +26,24 @@ namespace ariel{
         if (isPrime(element)){
             this->prime.push_back(element);
         }
-        if(this->back){
-            this->cross.push_back(element);
+        this->cross.clear();
+        bool org = true;
+        std::list<int>::iterator it = this->original_order.begin();
+        auto rev = this->original_order.rbegin();
+        for(int i = 0; i < this->original_order.size(); i++){
+            if(org){
+                this->cross.push_back(*it);
+                it++;
+                org = false;
+            }
+            else{
+                this->cross.push_back(*rev);
+                rev++;
+                org = true;
+            }
         }
-        else{
-            this->cross.push_front(element);
-        }
-        this->back = !this->back;
+
+        
     }
 
     void MagicalContainer::removeElement(int element){
@@ -256,7 +266,7 @@ namespace ariel{
 
     MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end() const{
         MagicalContainer::SideCrossIterator ans(*this);
-        ans.iter = this->cross_ptr->begin();
+        ans.iter = this->cross_ptr->end();
         return ans;
     }
 
